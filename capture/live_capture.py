@@ -1,11 +1,4 @@
-"""
-capture/live_capture.py
-========================
-Captures live packets from a network interface using Scapy.
-Requires root / administrator privileges.
 
-Returns the same normalised packet list format as pcap_reader.py.
-"""
 
 import time
 from colorama import Fore
@@ -19,19 +12,7 @@ except ImportError:
 
 def capture_live(interface: str, duration: int = 60,
                  verbose: bool = False) -> list:
-    """
-    Capture packets from a live interface for `duration` seconds.
-
-    Parameters
-    ----------
-    interface : str  — e.g. "eth0", "wlan0", "en0"
-    duration  : int  — seconds to capture
-    verbose   : bool
-
-    Returns
-    -------
-    list of normalised packet dicts
-    """
+   
     if not HAS_SCAPY:
         print(f"{Fore.RED}[!] Scapy not installed. Run: pip install scapy")
         return []
