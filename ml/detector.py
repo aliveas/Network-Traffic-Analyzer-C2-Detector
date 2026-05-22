@@ -1,13 +1,4 @@
-"""
-ml/detector.py
-===============
-Runs the trained Isolation Forest model against the feature
-DataFrame and appends anomaly scores and labels to each row.
 
-Adds two columns to the DataFrame:
-  ml_score   : float — anomaly score (more negative = more anomalous)
-  ml_anomaly : bool  — True if model classified flow as anomalous
-"""
 
 import numpy as np
 import pandas as pd
@@ -18,20 +9,7 @@ from features.extractor import ML_FEATURE_COLS
 
 def run_detection(model, scaler, feature_df: pd.DataFrame,
                   verbose: bool = False) -> pd.DataFrame:
-    """
-    Score every flow with the trained Isolation Forest.
-
-    Parameters
-    ----------
-    model      : trained IsolationForest
-    scaler     : fitted StandardScaler
-    feature_df : pd.DataFrame
-    verbose    : bool
-
-    Returns
-    -------
-    pd.DataFrame with added ml_score and ml_anomaly columns
-    """
+    
     df = feature_df.copy()
     X  = df[ML_FEATURE_COLS].fillna(0).values
 
