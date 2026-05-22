@@ -1,31 +1,3 @@
-"""
-features/extractor.py
-======================
-Extracts 12 behavioral features from each network flow.
-These features are what the ML model uses to detect C2 beaconing.
-
-Features extracted per flow:
-  1.  pkt_count            — total packets in flow
-  2.  total_bytes          — total bytes transferred
-  3.  duration             — flow duration in seconds
-  4.  mean_pkt_size        — average packet size (bytes)
-  5.  std_pkt_size         — std deviation of packet sizes
-                             (LOW = consistent sizes = suspicious)
-  6.  mean_iat             — mean inter-arrival time between packets
-                             (captures beacon interval)
-  7.  std_iat              — std deviation of inter-arrival times
-                             (LOW = regular timing = suspicious)
-  8.  coeff_var_iat        — std_iat / mean_iat (normalised regularity)
-  9.  bytes_per_second     — throughput
-  10. pkts_per_minute      — connection frequency
-  11. night_ratio          — fraction of packets sent 10pm–6am
-                             (HIGH = suspicious for user traffic)
-  12. dst_port_risk        — risk score for destination port
-                             (common C2 ports score higher)
-
-Returns a pandas DataFrame, one row per flow.
-"""
-
 import math
 import datetime
 from collections import Counter
