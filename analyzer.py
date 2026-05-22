@@ -1,18 +1,4 @@
-"""
-Network Traffic Analyzer & C2 Detector
-=======================================
-Main CLI entry point.
 
-Usage:
-    # Analyze a PCAP file
-    python analyzer.py --pcap samples/capture.pcap
-
-    # Live capture on an interface (requires admin/root)
-    python analyzer.py --interface eth0 --duration 60
-
-    # PCAP with custom output
-    python analyzer.py --pcap samples/capture.pcap --output c2_report.html --verbose
-"""
 
 import argparse
 import datetime
@@ -78,7 +64,7 @@ def main():
 
     print(f"{Fore.CYAN}[*] Started : {scan_time}")
 
-    # ── Step 1: Read packets ─────────────────────────────────────────
+    
     section("STEP 1 — Reading packets")
 
     if args.pcap:
@@ -100,7 +86,7 @@ def main():
         print(f"{Fore.YELLOW}[!] Too few packets to analyse. Capture more traffic.")
         sys.exit(1)
 
-    # ── Step 2: Build flows ──────────────────────────────────────────
+  
     section("STEP 2 — Building network flows")
     flows = build_flows(packets, min_packets=args.min_packets, verbose=args.verbose)
     print(f"{Fore.GREEN}[+] Flows built: {len(flows)}")
@@ -109,39 +95,39 @@ def main():
         print(f"{Fore.YELLOW}[!] No flows met the minimum packet threshold.")
         sys.exit(1)
 
-    # ── Step 3: Extract features ─────────────────────────────────────
+    
     section("STEP 3 — Extracting behavioral features")
     feature_df = extract_features(flows, verbose=args.verbose)
     print(f"{Fore.GREEN}[+] Features extracted for {len(feature_df)} flows")
     if args.verbose:
         print(f"    Columns: {list(feature_df.columns)}")
 
-    # ── Step 4: Train ML model ───────────────────────────────────────
+   
     section("STEP 4 — Training Isolation Forest model")
     model, scaler = train_model(feature_df, contamination=args.contamination,
                                 verbose=args.verbose)
     print(f"{Fore.GREEN}[+] Model trained on {len(feature_df)} flows")
 
-    # ── Step 5: Run ML detection ─────────────────────────────────────
+   
     section("STEP 5 — Running ML anomaly detection")
     ml_results = run_detection(model, scaler, feature_df, verbose=args.verbose)
     anomalous  = ml_results[ml_results["ml_anomaly"] == True]
     print(f"{Fore.GREEN}[+] ML flagged {len(anomalous)} anomalous flow(s) out of {len(ml_results)}")
 
-    # ── Step 6: Apply rule-based heuristics ──────────────────────────
+    
     section("STEP 6 — Applying C2 beacon rules")
     rule_results = apply_rules(ml_results, verbose=args.verbose)
     confirmed    = rule_results[rule_results["confirmed_c2"] == True]
     print(f"{Fore.GREEN}[+] Rules confirmed {len(confirmed)} high-confidence C2 flow(s)")
 
-    # ── Step 7: Build alerts ─────────────────────────────────────────
+   
     section("STEP 7 — Building alert list")
     alerts = build_alerts(rule_results, flows)
     for a in alerts[:5]:
         color = Fore.RED if a["severity"] in ("Critical","High") else Fore.YELLOW
         print(f"{color}  [{a['severity']}] {a['summary']}")
 
-    # ── Step 8: Generate report ──────────────────────────────────────
+   
     section("STEP 8 — Generating HTML dashboard", Fore.GREEN)
     os.makedirs("output", exist_ok=True)
     output_path = os.path.join("output", args.output)
