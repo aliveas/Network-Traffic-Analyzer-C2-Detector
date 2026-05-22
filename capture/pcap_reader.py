@@ -1,21 +1,4 @@
-"""
-capture/pcap_reader.py
-=======================
-Reads .pcap / .pcapng files and returns a list of normalised
-packet dicts using Scapy.
 
-Each packet dict:
-  {
-    "timestamp"  : float (Unix epoch),
-    "src_ip"     : str,
-    "dst_ip"     : str,
-    "src_port"   : int or 0,
-    "dst_port"   : int or 0,
-    "protocol"   : "TCP" | "UDP" | "ICMP" | "OTHER",
-    "length"     : int (bytes),
-    "flags"      : str (TCP flags, e.g. "S", "SA", "PA"),
-  }
-"""
 
 from colorama import Fore
 
@@ -79,18 +62,7 @@ def _parse_packet(pkt) -> dict | None:
 
 
 def read_pcap(file_path: str, verbose: bool = False) -> list:
-    """
-    Read a PCAP file and return a list of packet dicts.
-
-    Parameters
-    ----------
-    file_path : str  — path to .pcap or .pcapng
-    verbose   : bool
-
-    Returns
-    -------
-    list of packet dicts sorted by timestamp
-    """
+   
     if not HAS_SCAPY:
         print(f"{Fore.RED}[!] Scapy not installed. Run: pip install scapy")
         return []
