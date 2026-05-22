@@ -1,9 +1,4 @@
-"""
-alerts/alert_engine.py
-========================
-Converts scored/ruled flow rows into unified alert dicts
-for the HTML dashboard.
-"""
+
 
 from datetime import datetime
 import pandas as pd
@@ -36,18 +31,7 @@ def _summary(row) -> str:
 
 
 def build_alerts(results_df: pd.DataFrame, flows: list) -> list:
-    """
-    Build alert dicts for all flagged flows.
-
-    Parameters
-    ----------
-    results_df : pd.DataFrame from apply_rules()
-    flows      : original flow list (for raw event access)
-
-    Returns
-    -------
-    sorted list of alert dicts
-    """
+    
     alerts = []
 
     for _, row in results_df.iterrows():
