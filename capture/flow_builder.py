@@ -1,29 +1,4 @@
-"""
-capture/flow_builder.py
-========================
-Groups individual packets into network flows.
 
-A flow is identified by the 5-tuple:
-  (src_ip, dst_ip, dst_port, protocol)
-
-We intentionally use a one-directional key — C2 beaconing is
-always client→server, so we track that direction only.
-
-Each flow dict:
-  {
-    "flow_key"    : tuple (src_ip, dst_ip, dst_port, protocol),
-    "src_ip"      : str,
-    "dst_ip"      : str,
-    "dst_port"    : int,
-    "protocol"    : str,
-    "packets"     : list of packet dicts,
-    "start_time"  : float,
-    "end_time"    : float,
-    "duration"    : float seconds,
-    "total_bytes" : int,
-    "pkt_count"   : int,
-  }
-"""
 
 from collections import defaultdict
 from colorama import Fore
