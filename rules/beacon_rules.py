@@ -1,22 +1,4 @@
-"""
-rules/beacon_rules.py
-======================
-Rule-based heuristics applied ON TOP of ML anomaly detection.
-A flow must trigger both ML flagging AND at least one rule
-to be marked as confirmed_c2 = True (high confidence).
 
-Rules implemented:
-  R1 — Low inter-arrival timing variation (regular beacon interval)
-  R2 — Highly consistent packet sizes
-  R3 — High connection frequency to same destination
-  R4 — Suspicious destination port
-  R5 — Significant night-time activity ratio
-  R6 — Long-running low-bandwidth connection (keep-alive beaconing)
-  R7 — Known C2 port (hardcoded list)
-
-Each triggered rule adds a tag to the flow's rule_hits list.
-confirmed_c2 = True when ml_anomaly AND len(rule_hits) >= 1
-"""
 
 import pandas as pd
 from colorama import Fore
